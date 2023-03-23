@@ -26,7 +26,6 @@ replay_pid*
 *.bin
 
 # Gradle build outputs
-/.gradle/
 /build/
 /examples/*/build/
 
