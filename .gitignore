@@ -32,6 +32,4 @@ replay_pid*
 
 # Intellij Project Files
 /.idea/
-.gradle/*
-.gradle/buildOutputCleanup/cache.properties
-.gradle/file-system.probe
+/.gradle*
