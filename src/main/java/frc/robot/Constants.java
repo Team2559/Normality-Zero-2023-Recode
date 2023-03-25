@@ -56,17 +56,15 @@ public final class Constants {
   public static final int INCLINE_MOTOR = 18;
 
   // Shooter servo ID and Servo Angle
-  public static final int ShootServo = 20;
+  public static final int ShootServo = 0;
   public static final double ShootServoAngle = 122;
-  public static final double ShootServoReset = 55;
+  public static final double ShootServoReset = 15;
 
   // Shooter constants for motor speed
-  public static final double HighShot = -0.35; 
+  public static final double HighShot = -0.30; 
   public static final double LowShot = -0.21;
 
   // Constants for the intake
-  public static final double RollerSpeed = 0.35; 
-
-
+  public static final double RollerSpeed = 0.45; 
 
 }
