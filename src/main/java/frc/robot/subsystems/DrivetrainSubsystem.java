@@ -11,10 +11,12 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.kauailabs.navx.frc.AHRS;
 
 public class DrivetrainSubsystem extends SubsystemBase {
     private static final double MAX_VOLTAGE = 12.0;
@@ -26,8 +28,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final SwerveModule frontRightModule;
     private final SwerveModule backLeftModule;
     private final SwerveModule backRightModule;
+    //private final SwerveDriveOdometry odometry;
 
-    //private final PigeonIMU gyroscope = new PigeonIMU(Constants.DRIVETRAIN_PIGEON_ID);
+    private final AHRS gyroscope = new AHRS(SPI.Port.kMXP);
 
     private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
             new Translation2d(Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0),
@@ -35,12 +38,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
             new Translation2d(-Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0),
             new Translation2d(-Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0)
     );
-    //private final SwerveDriveOdometry odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(gyroscope.getFusedHeading()));
-
+    
     private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
     public DrivetrainSubsystem() {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("Drivetrain");
+
 
         frontLeftModule = Mk4SwerveModuleHelper.createNeo(
                 shuffleboardTab.getLayout("Front Left Module", BuiltInLayouts.kList)
@@ -86,6 +89,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 Constants.BACK_RIGHT_MODULE_STEER_OFFSET
         );
 
+        //odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(gyroscope.getFusedHeading()), {frontLeftModule.get});
+
         shuffleboardTab.addNumber("Gyroscope Angle", () -> getRotation().getDegrees());
         //shuffleboardTab.addNumber("Pose X", () -> odometry.getPoseMeters().getX());
         //shuffleboardTab.addNumber("Pose Y", () -> odometry.getPoseMeters().getY());
@@ -96,11 +101,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
         //         new Pose2d(odometry.getPoseMeters().getTranslation(), Rotation2d.fromDegrees(0.0)),
         //         Rotation2d.fromDegrees(gyroscope.getFusedHeading())
         // );
+        gyroscope.reset();
     }
 
     public Rotation2d getRotation() {
         //return odometry.getPoseMeters().getRotation();
-        return new Rotation2d(0);
+        return gyroscope.getRotation2d();
+        //return new Rotation2d(0);
     }
 
     public void drive(ChassisSpeeds chassisSpeeds) {
@@ -109,12 +116,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // odometry.update(Rotation2d.fromDegrees(gyroscope.getFusedHeading()),
+        //odometry.update(Rotation2d.fromDegrees(gyroscope.getFusedHeading()),
         //         new SwerveModuleState(frontLeftModule.getDriveVelocity(), new Rotation2d(frontLeftModule.getSteerAngle())),
         //         new SwerveModuleState(frontRightModule.getDriveVelocity(), new Rotation2d(frontRightModule.getSteerAngle())),
         //         new SwerveModuleState(backLeftModule.getDriveVelocity(), new Rotation2d(backLeftModule.getSteerAngle())),
         //         new SwerveModuleState(backRightModule.getDriveVelocity(), new Rotation2d(backRightModule.getSteerAngle()))
-        // );
+        //);
 
         SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassisSpeeds);
 
