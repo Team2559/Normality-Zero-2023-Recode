@@ -6,21 +6,34 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.commands.intakeCommand;
+import frc.robot.subsystems.intakeSubsystem;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class RobotContainer {
+  // Creates the subSystem for example, not used in code just reference for learning.
   private final ExampleSubsystem myExampleSubsystem = new ExampleSubsystem();
   
+  // Creates an object of the drivetrainsubsystem, intakesubsystem and shootersubsystem
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
+  private final intakeSubsystem m_IntakeSubsystem = new intakeSubsystem();
+  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
 
+  // Set the USB ports for the controllers.  Verify the Operator as #0
   private final CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  
+  // Initialize operator controller
+  private final XboxController m_operatorController = new XboxController(OperatorConstants.kOperatorControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -34,12 +47,31 @@ public class RobotContainer {
             () -> -modifyAxis(m_driverController.getRightX())
     ));
 
-    // new Button(controller::getBackButtonPressed)
-    //        .whenPressed(drivetrain::zeroGyroscope);
+    // Intake button configurations
+    new JoystickButton(m_operatorController, XboxController.Button.kA.value).onTrue(new intakeCommand(m_IntakeSubsystem, 1));
+    
+    // Expell from intake system
+    new JoystickButton(m_operatorController, XboxController.Button.kB.value).onTrue(new intakeCommand(m_IntakeSubsystem, 2)); 
+    
+    // Stop button for intake
+    new JoystickButton(m_operatorController, XboxController.Button.kX.value).onTrue(new intakeCommand(m_IntakeSubsystem, 0));
+
+    // Start shooter low shot - Spins up the shooter motors for layer 2 shot
+    new JoystickButton(m_operatorController, XboxController.Button.kLeftBumper.value).onTrue(new ShootCommand(m_ShooterSubsystem, 0));
+
+    // Start shooter high shot - Spins up the shoorter motors for layer 3 shot
+    new JoystickButton(m_operatorController, XboxController.Button.kRightBumper.value).onTrue(new ShootCommand(m_ShooterSubsystem, 1));
+  
+    // Stop the shooter
+    new JoystickButton(m_operatorController, XboxController.Button.kY.value).onTrue(new ShootCommand(m_ShooterSubsystem, 2));
   }
 
   public DrivetrainSubsystem getDrivetrain() {
     return drivetrain;
+  }
+
+  public intakeSubsystem getIntakeCommand() {
+    return m_IntakeSubsystem;
   }
 
   private static double deadband(double value, double deadband) {

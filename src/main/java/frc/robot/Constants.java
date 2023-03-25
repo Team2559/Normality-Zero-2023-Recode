@@ -15,6 +15,7 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 2;
+    public static final int kOperatorControllerPort = 0;
   }
   public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.559;
   public static final double DRIVETRAIN_WHEELBASE_METERS = 0.559;
@@ -51,6 +52,21 @@ public final class Constants {
 
   //And these are the intake IDs, use them carefully
   public static final int TOP_ROLLER_MOTOR = 17;
-  public static final int BOTTOM_ROLLER_MOTOR = 14;
+  public static final int BOTTOM_ROLLER_MOTOR = 19; 
   public static final int INCLINE_MOTOR = 18;
+
+  // Shooter servo ID and Servo Angle
+  public static final int ShootServo = 20;
+  public static final double ShootServoAngle = 122;
+  public static final double ShootServoReset = 55;
+
+  // Shooter constants for motor speed
+  public static final double HighShot = -0.35; 
+  public static final double LowShot = -0.21;
+
+  // Constants for the intake
+  public static final double RollerSpeed = 0.35; 
+
+
+
 }
