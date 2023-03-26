@@ -65,6 +65,6 @@ public final class Constants {
   public static final double LowShot = -0.21;
 
   // Constants for the intake
-  public static final double RollerSpeed = 0.45; 
+  public static final double RollerSpeed = 0.4; 
 
 }

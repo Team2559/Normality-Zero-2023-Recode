@@ -46,13 +46,16 @@ public class intakeCommand extends CommandBase {
         // Use the directionIntake to assign the direction of the ball
         if (this.directionIntake == 1) {
             this.topIntakeSpeed = Constants.RollerSpeed;
-            this.bottomIntakeSpeed = Constants.RollerSpeed * 0.5;
+            this.bottomIntakeSpeed = Constants.RollerSpeed;
         } else if (this.directionIntake == 2) {
             this.topIntakeSpeed = Constants.RollerSpeed * -1;
-            this.bottomIntakeSpeed = Constants.RollerSpeed * -0.5;
+            this.bottomIntakeSpeed = Constants.RollerSpeed * -1;
         } else if (this.directionIntake == 0) {
             this.topIntakeSpeed = 0.0;
             this.bottomIntakeSpeed = 0.0;
+        } else if (this.directionIntake == 3) {
+            this.topIntakeSpeed = Constants.RollerSpeed * 1.05;
+            this.bottomIntakeSpeed = this.topIntakeSpeed * 1.05;
         }
 
         //tell the intake to start up

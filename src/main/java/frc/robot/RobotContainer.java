@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Auto2023;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -56,6 +57,9 @@ public class RobotContainer {
     // Stop button for intake
     new JoystickButton(m_operatorController, XboxController.Button.kX.value).onTrue(new intakeCommand(m_IntakeSubsystem, 0));
 
+    // Run intake at higher speed
+    new JoystickButton(m_operatorController, XboxController.Button.kY.value).onTrue(new intakeCommand(m_IntakeSubsystem, 3));
+
     // Start shooter low shot - Spins up the shooter motors for layer 2 shot
     new JoystickButton(m_operatorController, XboxController.Button.kLeftBumper.value).onTrue(new ShootCommand(m_ShooterSubsystem, 0));
 
@@ -63,7 +67,7 @@ public class RobotContainer {
     new JoystickButton(m_operatorController, XboxController.Button.kRightBumper.value).onTrue(new ShootCommand(m_ShooterSubsystem, 1));
   
     // Stop the shooter
-    new JoystickButton(m_operatorController, XboxController.Button.kY.value).onTrue(new ShootCommand(m_ShooterSubsystem, 2));
+    // new JoystickButton(m_operatorController, XboxController.Button.kY.value).onTrue(new ShootCommand(m_ShooterSubsystem, 2));
   }
 
   public DrivetrainSubsystem getDrivetrain() {
@@ -117,5 +121,6 @@ private static double modifyAxis(double value) {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
      return Autos.exampleAuto(myExampleSubsystem);
+     //return Auto2023.autoStart(m_ShooterSubsystem);
   }
 }
