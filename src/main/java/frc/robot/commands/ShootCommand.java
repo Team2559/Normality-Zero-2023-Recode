@@ -9,7 +9,6 @@ public class ShootCommand extends CommandBase {
     
     private ShooterSubsystem m_ShooterSubsystem;
     private int ShotLevel = 0;
-    private final Timer timer = new Timer(); 
 
     public ShootCommand (ShooterSubsystem m_ShooterSubsystem, int ShotLevel) {
 
@@ -27,17 +26,16 @@ public class ShootCommand extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    public void execute() {
-        
+    public void execute() {        
         //Check the shot level that is passed from the controller command.
         if (ShotLevel == 1) {
-            m_ShooterSubsystem.engageShooter(Constants.HighShot);
+            this.m_ShooterSubsystem.engageShooter(Constants.HighShot);
         }
         else if (ShotLevel == 0) {
-            m_ShooterSubsystem.engageShooter(Constants.LowShot);
+            this.m_ShooterSubsystem.engageShooter(Constants.LowShot);
         }
         else if (ShotLevel == 2) {
-            m_ShooterSubsystem.stop();
+            this.isFinished();
         }
         
     }
@@ -50,12 +48,6 @@ public class ShootCommand extends CommandBase {
 
     // Called once after isFinished returns true
     @Override
-    public void end(boolean interrupted) {
-        //stop the shooter moters
-        m_ShooterSubsystem.stop();
-
-        //Stop the timer
-        timer.stop();
-    }
+    public void end(boolean interrupted) {}
 
 }
