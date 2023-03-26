@@ -19,11 +19,12 @@ public class ShooterSubsystem extends SubsystemBase {
     //Method to Declare the motor controllers
     private CANSparkMax m_LeftShootMotor = new CANSparkMax(Constants.LEFT_SHOOTER, CANSparkMax.MotorType.kBrushed);
     private CANSparkMax m_RightShootMotor = new CANSparkMax(Constants.RIGHT_SHOOTER, CANSparkMax.MotorType.kBrushed);
-    private Servo shooterServo = new Servo(Constants.ShootServo);
+    //private Servo shooterServo = new Servo(Constants.ShootServo);
 
      // Insert command for the servo to push cube into shooter
 
     public ShooterSubsystem () {
+
 
     }
 
@@ -35,7 +36,7 @@ public class ShooterSubsystem extends SubsystemBase {
         m_RightShootMotor.set(speed);
 
         //Push cube into the shooter with the servo
-        shooterServo.setAngle(Constants.ShootServoAngle);
+        //shooterServo.setAngle(Constants.ShootServoAngle);
 
         //Stop the shooter
         //this.stop();
@@ -45,11 +46,11 @@ public class ShooterSubsystem extends SubsystemBase {
      public void stop () {
 
         //Stop the shooter from shooting
-        m_LeftShootMotor.stopMotor();
-        m_RightShootMotor.stopMotor();
+        m_LeftShootMotor.set(0.0);
+        m_RightShootMotor.set(0.0);
 
         // Reset the cube pushing servo
-        shooterServo.setAngle(Constants.ShootServoReset);
+        //shooterServo.setAngle(Constants.ShootServoReset);
 
      }
 
