@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.intakeSubsystem;
@@ -12,7 +13,7 @@ public class intakeCommand extends CommandBase {
     
 
     // directionIntake int for in(1), out(2) or stop(0)
-    private int directionIntake = 0;
+    private int directionIntake;
     private double topIntakeSpeed = Constants.RollerSpeed;
     private double bottomIntakeSpeed = Constants.RollerSpeed * 0.5;
     private final Timer timer = new Timer();
@@ -22,26 +23,6 @@ public class intakeCommand extends CommandBase {
 
         this.m_IntakeSubsystem = m_IntakeSubsystem;
         this.directionIntake = directionIn;
-
-    }
-
-    public void stop () {
-        // tell intake to stop
-        m_IntakeSubsystem.stop();        
-    }
-
-    // Called when the command is initially scheduled.
-    @Override
-    public void initialize() {
-        
-        // Reset timer and start.
-        timer.reset();
-        timer.start();
-    }
-
-    // Called every time the scheduler runs while the command is scheduled.
-    @Override
-    public void execute () {
         
         // Use the directionIntake to assign the direction of the ball
         if (this.directionIntake == 1) {
@@ -58,8 +39,30 @@ public class intakeCommand extends CommandBase {
             this.bottomIntakeSpeed = this.topIntakeSpeed * 1.05;
         }
 
+
+    }
+
+    public void stop() {
+        // tell intake to stop
+        m_IntakeSubsystem.stop();        
+    }
+
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+        
+        // Reset timer and start.
+        timer.reset();
+        timer.start();
+    }
+
+
+
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute () {
         //tell the intake to start up
-        m_IntakeSubsystem.runIntake(topIntakeSpeed, bottomIntakeSpeed);
+        m_IntakeSubsystem.runIntakeTest(this.topIntakeSpeed, this.bottomIntakeSpeed);
      }
 
      // Called once the command ends or is interrupted.

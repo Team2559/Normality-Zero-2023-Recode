@@ -61,10 +61,12 @@ public final class Constants {
   public static final double ShootServoReset = 15;
 
   // Shooter constants for motor speed
-  public static final double HighShot = -0.30; 
+  public static final double HighShot = -0.50; 
   public static final double LowShot = -0.21;
 
   // Constants for the intake
-  public static final double RollerSpeed = 0.4; 
+  public static final double RollerSpeed = 0.35; 
+
+
 
 }

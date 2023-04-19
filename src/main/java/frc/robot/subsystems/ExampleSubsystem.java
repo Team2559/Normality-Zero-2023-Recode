@@ -4,12 +4,30 @@
 
 package frc.robot.subsystems;
 
+// WPI imports
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+// Other imports
+import edu.wpi.first.wpilibj.Servo;
+import com.revrobotics.CANSparkMax;
+
+// Robot import statements
+import frc.robot.Constants;
+import frc.robot.commands.ShootCommand;
+import frc.robot.subsystems.ShooterSubsystem;
+
+
 public class ExampleSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  public ExampleSubsystem() {}
+  final CANSparkMax m_LeftShootMotor = new CANSparkMax(Constants.LEFT_SHOOTER, CANSparkMax.MotorType.kBrushed);
+  final CANSparkMax m_RightShootMotor = new CANSparkMax(Constants.RIGHT_SHOOTER, CANSparkMax.MotorType.kBrushed);
+  final Servo shooterServo = new Servo(Constants.ShootServo);
+
+  public ExampleSubsystem() {
+
+  }
 
   /**
    * Example command factory method.
@@ -19,10 +37,21 @@ public class ExampleSubsystem extends SubsystemBase {
   public CommandBase exampleMethodCommand() {
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
+    
     return runOnce(
         () -> {
           /* one-time action goes here */
-          
+
+
+          //Set the speed for each shooter motor based on the constant speed 
+          m_LeftShootMotor.set(Constants.HighShot);
+          m_RightShootMotor.set(Constants.HighShot);
+
+          //Push cube into the shooter with the servo
+          shooterServo.setAngle(Constants.ShootServoAngle);
+
+          shooterServo.setAngle(Constants.ShootServoReset);
+
         });
   }
 

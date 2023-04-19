@@ -19,11 +19,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
 public class RobotContainer {
   // Creates the subSystem for example, not used in code just reference for learning.
-  private final ExampleSubsystem myExampleSubsystem = new ExampleSubsystem();
+  //private final ExampleSubsystem myExampleSubsystem = new ExampleSubsystem();
   
   // Creates an object of the drivetrainsubsystem, intakesubsystem and shootersubsystem
   private final DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
@@ -118,9 +119,11 @@ private static double modifyAxis(double value) {
    *
    * @return the command to run in autonomous
    */
+
+   /* 
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-     return Autos.exampleAuto(myExampleSubsystem);
-     //return Auto2023.autoStart(m_ShooterSubsystem);
-  }
+    // return Autos.exampleAuto(m_ShooterSubsystem);
+    return ExampleCommand.exampleMethodCommand();
+  } */
 }

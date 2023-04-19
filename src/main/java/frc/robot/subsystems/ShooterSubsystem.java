@@ -2,7 +2,10 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+
 import com.revrobotics.CANSparkMax;
 
 
@@ -13,7 +16,7 @@ public class ShooterSubsystem extends SubsystemBase {
       *  - Spins up the motors based on inputs of high or low shot.
       *  - Pushes cube into the shooter with servo
       *  - Shoots the cube
-      *  - Stops the motors & resets the pushing device
+      *  - Stops the motors & resets the pushing device 
       */
 
     //Method to Declare the motor controllers
@@ -29,17 +32,24 @@ public class ShooterSubsystem extends SubsystemBase {
 
     // Method to shoot the cube
     public void engageShooter (double speed) {
-        
+   
+      
         //Set the speed for each shooter motor based on the constant speed 
         m_LeftShootMotor.set(speed);
         m_RightShootMotor.set(speed);
+        shooterServo.setAngle(122);
 
-        //Push cube into the shooter with the servo
-        shooterServo.setAngle(Constants.ShootServoAngle);
+        // Stop shooter, reset the servo
+        //m_LeftShootMotor.stopMotor();
+        //m_RightShootMotor.stopMotor();
 
-        //Stop the shooter
-        //this.stop();
+        // Reset the cube pushing servo
+        shooterServo.setAngle(55);
+      
+
+
     }
+
 
      // Method to stop the shooter
      public void stop () {

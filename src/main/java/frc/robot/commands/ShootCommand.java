@@ -9,6 +9,7 @@ public class ShootCommand extends CommandBase {
     
     private ShooterSubsystem m_ShooterSubsystem;
     private int ShotLevel = 0;
+    private final Timer timer = new Timer(); 
 
     public ShootCommand (ShooterSubsystem m_ShooterSubsystem, int ShotLevel) {
 
