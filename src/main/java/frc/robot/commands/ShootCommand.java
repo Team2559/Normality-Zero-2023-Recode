@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.ShooterSubsystem;
+import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.Timer;
 
 public class ShootCommand extends CommandBase {
@@ -15,6 +16,7 @@ public class ShootCommand extends CommandBase {
 
         this.m_ShooterSubsystem = m_ShooterSubsystem;
         this.ShotLevel = ShotLevel;
+        addRequirements(m_ShooterSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -36,19 +38,24 @@ public class ShootCommand extends CommandBase {
             this.m_ShooterSubsystem.engageShooter(Constants.LowShot);
         }
         else if (ShotLevel == 2) {
-            this.isFinished();
+            //this.isFinished();
+            this.end(true);
         }
         
+    }
+    
+    
+    // Called once after isFinished returns true
+    @Override
+    public void end(boolean interrupted) {
+        m_ShooterSubsystem.engageShooter(0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
         return timer.hasElapsed(3.0);
+         
     }
-
-    // Called once after isFinished returns true
-    @Override
-    public void end(boolean interrupted) {}
 
 }

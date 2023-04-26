@@ -120,10 +120,10 @@ private static double modifyAxis(double value) {
    * @return the command to run in autonomous
    */
 
-   /* 
+  
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    // return Autos.exampleAuto(m_ShooterSubsystem);
-    return ExampleCommand.exampleMethodCommand();
-  } */
+    return Autos.exampleAuto(m_ShooterSubsystem);
+    //return ExampleCommand.exampleMethodCommand();
+  } 
 }
