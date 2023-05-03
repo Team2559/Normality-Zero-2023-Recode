@@ -37,23 +37,16 @@ public class ShooterSubsystem extends SubsystemBase {
         //Set the speed for each shooter motor based on the constant speed 
         m_LeftShootMotor.set(speed);
         m_RightShootMotor.set(speed);
-        shooterServo.setAngle(Constants.ShootServoAngle);
+        
+    }
 
-        // Stop shooter, reset the servo
-        //m_LeftShootMotor.stopMotor();
-        //m_RightShootMotor.stopMotor();
+    public void servoUp () {
 
-        // Reset the cube pushing servo
-        shooterServo.setAngle(Constants.ShootServoReset);
-      
+      shooterServo.setAngle(Constants.ShootServoAngle);
     }
 
      // Method to stop the shooter
-     public void stop () {
-
-        //Stop the shooter from shooting
-        m_LeftShootMotor.stopMotor();
-        m_RightShootMotor.stopMotor();
+     public void servoDown () {
 
         // Reset the cube pushing servo
         shooterServo.setAngle(Constants.ShootServoReset);

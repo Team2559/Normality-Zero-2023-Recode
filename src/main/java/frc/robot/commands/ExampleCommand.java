@@ -21,6 +21,7 @@ public class ExampleCommand extends CommandBase {
     m_subsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
+    
   }
 
   // Called when the command is initially scheduled.

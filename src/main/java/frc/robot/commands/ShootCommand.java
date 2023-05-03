@@ -42,6 +42,11 @@ public class ShootCommand extends CommandBase {
             this.end(true);
         }
         
+        if (timer.hasElapsed(1.0)) {
+
+            m_ShooterSubsystem.servoUp();
+        }
+        
     }
     
     
@@ -49,12 +54,19 @@ public class ShootCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         m_ShooterSubsystem.engageShooter(0);
+        m_ShooterSubsystem.servoDown();
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        return timer.hasElapsed(3.0);
+        if (timer.hasElapsed(3.0)) 
+            return true;
+        else
+            return false;
+        
+       // return timer.hasElapsed(3.0);
          
     }
 

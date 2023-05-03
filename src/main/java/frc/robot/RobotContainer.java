@@ -12,8 +12,12 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.intakeCommand;
 import frc.robot.subsystems.intakeSubsystem;
+
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -39,8 +43,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
     configureBindings();
+
     drivetrain.register();
 
     drivetrain.setDefaultCommand(new DriveCommand(drivetrain,
@@ -48,31 +52,14 @@ public class RobotContainer {
             () -> -modifyAxis(m_driverController.getLeftX()),
             () -> -modifyAxis(m_driverController.getRightX())
     ));
-
-    // Intake button configurations
-    new JoystickButton(m_operatorController, XboxController.Button.kA.value).onTrue(new intakeCommand(m_IntakeSubsystem, 1));
-    
-    // Expell from intake system
-    new JoystickButton(m_operatorController, XboxController.Button.kB.value).onTrue(new intakeCommand(m_IntakeSubsystem, 2)); 
-    
-    // Stop button for intake
-    new JoystickButton(m_operatorController, XboxController.Button.kX.value).onTrue(new intakeCommand(m_IntakeSubsystem, 0));
-
-    // Run intake at higher speed
-    new JoystickButton(m_operatorController, XboxController.Button.kY.value).onTrue(new intakeCommand(m_IntakeSubsystem, 3));
-
-    // Start shooter low shot - Spins up the shooter motors for layer 2 shot
-    new JoystickButton(m_operatorController, XboxController.Button.kLeftBumper.value).onTrue(new ShootCommand(m_ShooterSubsystem, 0));
-
-    // Start shooter high shot - Spins up the shoorter motors for layer 3 shot
-    new JoystickButton(m_operatorController, XboxController.Button.kRightBumper.value).onTrue(new ShootCommand(m_ShooterSubsystem, 1));
-  
-    // Stop the shooter
-    // new JoystickButton(m_operatorController, XboxController.Button.kY.value).onTrue(new ShootCommand(m_ShooterSubsystem, 2));
   }
 
   public DrivetrainSubsystem getDrivetrain() {
     return drivetrain;
+  }
+
+  public ShooterSubsystem getShooterSubsystem() {
+    return m_ShooterSubsystem;
   }
 
   public intakeSubsystem getIntakeCommand() {
@@ -111,7 +98,29 @@ private static double modifyAxis(double value) {
    * joysticks}.
    */
   private void configureBindings() {
+    // Configure the trigger bindings
 
+
+    // Intake button configurations
+    new JoystickButton(m_operatorController, XboxController.Button.kA.value).onTrue(new intakeCommand(m_IntakeSubsystem, 1));
+    
+    // Expell from intake system
+    new JoystickButton(m_operatorController, XboxController.Button.kB.value).onTrue(new intakeCommand(m_IntakeSubsystem, 2)); 
+    
+    // Stop button for intake
+    new JoystickButton(m_operatorController, XboxController.Button.kX.value).onTrue(new intakeCommand(m_IntakeSubsystem, 0));
+
+    // Run intake at higher speed
+    new JoystickButton(m_operatorController, XboxController.Button.kY.value).onTrue(new intakeCommand(m_IntakeSubsystem, 3));
+
+    // Start shooter low shot - Spins up the shooter motors for layer 2 shot
+    new JoystickButton(m_operatorController, XboxController.Button.kLeftBumper.value).onTrue(new ShootCommand(m_ShooterSubsystem, 0));
+
+    // Start shooter high shot - Spins up the shoorter motors for layer 3 shot
+    new JoystickButton(m_operatorController, XboxController.Button.kRightBumper.value).onTrue(new ShootCommand(m_ShooterSubsystem, 1));
+  
+    // Stop the shooter
+    // new JoystickButton(m_operatorController, XboxController.Button.kY.value).onTrue(new ShootCommand(m_ShooterSubsystem, 2));
   }
 
   /**
@@ -123,7 +132,21 @@ private static double modifyAxis(double value) {
   
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_ShooterSubsystem);
+    //return Autos.exampleAuto(m_ShooterSubsystem);
     //return ExampleCommand.exampleMethodCommand();
+    //return new ShootCommand.(m_ShooterSubsystem, 0);
+   
+
+    //return new DriveCommand(drivetrain, null, null, null);
+
+    //final DoubleSupplier dblMotor = 0.2;
+
+
+    //return new SequentialCommandGroup(new DriveCommand(drivetrain, () -> 0.2, null, null));
+    
+    return new SequentialCommandGroup(new ShootCommand(m_ShooterSubsystem, 0), 
+      new DriveCommand(drivetrain, () -> 0.2, () -> 0.0, () -> 0.0)); 
+    
+  
   } 
 }
