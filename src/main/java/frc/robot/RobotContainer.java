@@ -11,6 +11,7 @@ import frc.robot.commands.ShootCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.intakeCommand;
+import frc.robot.commands.AutoDriveCommand;
 import frc.robot.subsystems.intakeSubsystem;
 
 import java.util.function.DoubleSupplier;
@@ -144,8 +145,8 @@ private static double modifyAxis(double value) {
 
     //return new SequentialCommandGroup(new DriveCommand(drivetrain, () -> 0.2, null, null));
     
-    return new SequentialCommandGroup(new ShootCommand(m_ShooterSubsystem, 0), 
-      new DriveCommand(drivetrain, () -> 0.2, () -> 0.0, () -> 0.0)); 
+    return new SequentialCommandGroup(new ShootCommand(m_ShooterSubsystem, 1), 
+      new AutoDriveCommand(drivetrain, () -> -0.4, () -> 0.0, () -> 0.0)); 
     
   
   } 

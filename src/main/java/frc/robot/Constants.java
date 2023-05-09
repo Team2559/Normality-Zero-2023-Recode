@@ -62,7 +62,7 @@ public final class Constants {
 
   // Shooter constants for motor speed
   public static final double HighShot = -0.40; 
-  public static final double LowShot = -0.21;
+  public static final double LowShot = -0.23;
 
   // Constants for the intake
   public static final double RollerSpeed = 0.35; 

@@ -65,7 +65,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR,
                 Constants.FRONT_RIGHT_MODULE_STEER_MOTOR,
                 Constants.FRONT_RIGHT_MODULE_STEER_ENCODER,
-                Constants.FRONT_RIGHT_MODULE_STEER_OFFSET
+                Constants.FRONT_RIGHT_MODULE_STEER_OFFSET 
         );
 
         backLeftModule = Mk4SwerveModuleHelper.createNeo(
