@@ -10,6 +10,7 @@ public interface SteerControllerFactory<Controller extends SteerController, Stee
     ) {
         container.addNumber("Current Angle", () -> Math.toDegrees(controller.getStateAngle()));
         container.addNumber("Target Angle", () -> Math.toDegrees(controller.getReferenceAngle()));
+        container.addNumber("Steer Temperature (\u00B0C)", controller::getMotorTemperature);
     }
 
     default Controller create(

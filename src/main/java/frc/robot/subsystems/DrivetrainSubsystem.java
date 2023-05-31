@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -44,6 +45,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public DrivetrainSubsystem() {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("Drivetrain");
+
+        
+        ShuffleboardLayout layout = shuffleboardTab.getLayout("Output", BuiltInLayouts.kList)
+                .withSize(2, 3)
+                .withPosition(8, 1);
+
+        layout.addDouble("X", () -> chassisSpeeds.vxMetersPerSecond);
+        layout.addDouble("Y", () -> chassisSpeeds.vyMetersPerSecond);
+        layout.addDouble("R", () -> chassisSpeeds.omegaRadiansPerSecond);
 
 
         frontLeftModule = Mk4SwerveModuleHelper.createNeo(
