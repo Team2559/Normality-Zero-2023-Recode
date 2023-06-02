@@ -65,7 +65,10 @@ public final class Constants {
   public static final double LowShot = -0.23;
 
   // Constants for the intake
-  public static final double RollerSpeed = 0.4; 
+  public static final double RollerSpeed = 0.4;
+
+  // Maximum safe temperature for neos
+  public static final double MaxNeoTemp = 50.0;
 
   //Automonous Motor speeds
   //public static final DoubleSupplier.getAsDouble AutoSpeed = 0.1;

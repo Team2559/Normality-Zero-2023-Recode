@@ -109,10 +109,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
         //shuffleboardTab.addNumber("Pose Y", () -> odometry.getPoseMeters().getY());
 
         shuffleboardTab.addBoolean("Temperature safe",
-                () -> frontLeftModule.getDriveMotorTemperature()  < 50 && frontLeftModule.getSteerMotorTemperature()  < 50
-                   && frontRightModule.getDriveMotorTemperature() < 50 && frontRightModule.getSteerMotorTemperature() < 50
-                   && backLeftModule.getDriveMotorTemperature()   < 50 && backLeftModule.getSteerMotorTemperature()   < 50
-                   && backRightModule.getDriveMotorTemperature()  < 50 && backRightModule.getSteerMotorTemperature()  < 50
+                () -> frontLeftModule.getDriveMotorTemperature()  < Constants.MaxNeoTemp && frontLeftModule.getSteerMotorTemperature()  < Constants.MaxNeoTemp
+                   && frontRightModule.getDriveMotorTemperature() < Constants.MaxNeoTemp && frontRightModule.getSteerMotorTemperature() < Constants.MaxNeoTemp
+                   && backLeftModule.getDriveMotorTemperature()   < Constants.MaxNeoTemp && backLeftModule.getSteerMotorTemperature()   < Constants.MaxNeoTemp
+                   && backRightModule.getDriveMotorTemperature()  < Constants.MaxNeoTemp && backRightModule.getSteerMotorTemperature()  < Constants.MaxNeoTemp
         ).withWidget(kBooleanBox);
     }
 
