@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.kauailabs.navx.frc.AHRS;
 
+import static edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets.kBooleanBox;
+
 public class DrivetrainSubsystem extends SubsystemBase {
     private static final double MAX_VOLTAGE = 12.0;
     public static final double MAX_VELOCITY_METERS_PER_SECOND = Constants.MAX_SPEED;
@@ -105,6 +107,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
         shuffleboardTab.addNumber("Gyroscope Angle", () -> getRotation().getDegrees());
         //shuffleboardTab.addNumber("Pose X", () -> odometry.getPoseMeters().getX());
         //shuffleboardTab.addNumber("Pose Y", () -> odometry.getPoseMeters().getY());
+
+        shuffleboardTab.addBoolean("Temperature safe",
+                () -> frontLeftModule.getDriveMotorTemperature()  < 50 && frontLeftModule.getSteerMotorTemperature()  < 50
+                   && frontRightModule.getDriveMotorTemperature() < 50 && frontRightModule.getSteerMotorTemperature() < 50
+                   && backLeftModule.getDriveMotorTemperature()   < 50 && backLeftModule.getSteerMotorTemperature()   < 50
+                   && backRightModule.getDriveMotorTemperature()  < 50 && backRightModule.getSteerMotorTemperature()  < 50
+        ).withWidget(kBooleanBox);
     }
 
     public void zeroGyroscope() {
