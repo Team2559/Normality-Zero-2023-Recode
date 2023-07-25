@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AngleCommand;
 import frc.robot.commands.Auto2023;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ShootCommand;
@@ -37,7 +38,7 @@ public class RobotContainer {
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
 
   // Set the USB ports for the controllers.  Verify the Operator as #0
-  private final CommandXboxController m_driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final XboxController m_driverController = new XboxController(OperatorConstants.kDriverControllerPort);
   
   // Initialize operator controller
   private final XboxController m_operatorController = new XboxController(OperatorConstants.kOperatorControllerPort);
@@ -85,7 +86,8 @@ private static double modifyAxis(double value) {
 
     // Square the axis
     value = Math.copySign(value * value, value);
-
+    // value = value * value * value;
+    
     return value;
 }
 
@@ -101,6 +103,9 @@ private static double modifyAxis(double value) {
   private void configureBindings() {
     // Configure the trigger bindings
 
+
+    // Reset swerve module angles
+    new JoystickButton(m_driverController, XboxController.Button.kStart.value).whileTrue(new AngleCommand(drivetrain, () -> 1, () -> 0, () -> 0));
 
     // Intake button configurations
     new JoystickButton(m_operatorController, XboxController.Button.kA.value).onTrue(new intakeCommand(m_IntakeSubsystem, 1));
@@ -146,7 +151,7 @@ private static double modifyAxis(double value) {
     //return new SequentialCommandGroup(new DriveCommand(drivetrain, () -> 0.2, null, null));
     
     return new SequentialCommandGroup(new ShootCommand(m_ShooterSubsystem, 1), 
-      new AutoDriveCommand(drivetrain, () -> -0.4, () -> 0.0, () -> 0.0)); 
+      new AutoDriveCommand(drivetrain, () -> 0.4, () -> 0.0, () -> 0.0)); 
     
   
   } 

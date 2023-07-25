@@ -25,7 +25,7 @@ public final class Constants {
   public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 7;
   public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 8;
   public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 13;
-  public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(280.0);
+  public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(285.0);
 
   public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 1;
   public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 2;
@@ -61,7 +61,7 @@ public final class Constants {
   public static final double ShootServoReset = 50;
 
   // Shooter constants for motor speed
-  public static final double HighShot = -0.40; 
+  public static final double HighShot = -0.30;
   public static final double LowShot = -0.23;
 
   // Constants for the intake

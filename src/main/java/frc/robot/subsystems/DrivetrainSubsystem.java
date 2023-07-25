@@ -44,6 +44,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     );
     
     private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+    private boolean angleOnly = false;
 
     public DrivetrainSubsystem() {
         ShuffleboardTab shuffleboardTab = Shuffleboard.getTab("Drivetrain");
@@ -132,6 +133,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     public void drive(ChassisSpeeds chassisSpeeds) {
         this.chassisSpeeds = chassisSpeeds;
+        this.angleOnly = false;
+    }
+
+    public void setAngles(ChassisSpeeds chassisSpeeds) {
+        this.chassisSpeeds = chassisSpeeds;
+        this.angleOnly = true;
     }
 
     @Override
@@ -144,6 +151,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
         //);
 
         SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassisSpeeds);
+
+        if (this.angleOnly) {
+            for (SwerveModuleState state: states) {
+                state.speedMetersPerSecond = 0;
+            }
+        }
 
         frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
         frontRightModule.set(-states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
