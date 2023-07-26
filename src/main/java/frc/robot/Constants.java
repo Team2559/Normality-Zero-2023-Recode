@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -70,7 +75,19 @@ public final class Constants {
   // Maximum safe temperature for neos
   public static final double MaxNeoTemp = 50.0;
 
-  //Automonous Motor speeds
-  //public static final DoubleSupplier.getAsDouble AutoSpeed = 0.1;
+  // Automonous Motor speeds
+  public static final double AutoSpeed = 0.2;
+  public static final double AutoAccel = 0.1;
+
+  // Trajectory settings
+  public static final TrajectoryConfig trajectoyConfig = new TrajectoryConfig(AutoSpeed, AutoAccel);
+
+  // Autonomos path PID
+  public static final PIDController xController = new PIDController(1, 0, 0);
+  public static final PIDController yController = new PIDController(1, 0, 0);
+  public static final ProfiledPIDController omegaController = new ProfiledPIDController(
+    1, 0, 0,
+    new TrapezoidProfile.Constraints(2 * Math.PI, Math.PI)
+  );
 
 }

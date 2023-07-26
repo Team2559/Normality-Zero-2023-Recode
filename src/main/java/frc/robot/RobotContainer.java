@@ -15,8 +15,13 @@ import frc.robot.commands.intakeCommand;
 import frc.robot.commands.AutoDriveCommand;
 import frc.robot.subsystems.intakeSubsystem;
 
+import java.util.ArrayList;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -147,12 +152,16 @@ private static double modifyAxis(double value) {
 
     //final DoubleSupplier dblMotor = 0.2;
 
-
-    //return new SequentialCommandGroup(new DriveCommand(drivetrain, () -> 0.2, null, null));
+    Trajectory path = TrajectoryGenerator.generateTrajectory(
+      new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)),
+      new ArrayList<>(),
+      new Pose2d(0.5, 0.0, Rotation2d.fromDegrees(0)),
+      Constants.trajectoyConfig
+    );
     
-    return new SequentialCommandGroup(new ShootCommand(m_ShooterSubsystem, 1), 
-      new AutoDriveCommand(drivetrain, () -> 0.4, () -> 0.0, () -> 0.0)); 
-    
-  
+    return new SequentialCommandGroup(
+      new ShootCommand(m_ShooterSubsystem, 1), 
+      new AutoDriveCommand(drivetrain, path)
+    );
   } 
 }

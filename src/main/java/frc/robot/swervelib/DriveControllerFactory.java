@@ -9,6 +9,7 @@ public interface DriveControllerFactory<Controller extends DriveController, Driv
             Controller controller
     ) {
         container.addNumber("Current Velocity", controller::getStateVelocity);
+        container.addNumber("Current Position", controller::getStatePosition);
         container.addNumber("Drive Temperature (\u00B0C)", controller::getMotorTemperature);
     }
 

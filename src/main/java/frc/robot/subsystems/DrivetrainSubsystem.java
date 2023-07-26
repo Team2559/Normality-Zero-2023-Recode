@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -32,7 +33,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
     private final SwerveModule frontRightModule;
     private final SwerveModule backLeftModule;
     private final SwerveModule backRightModule;
-    //private final SwerveDriveOdometry odometry;
+    private final SwerveDriveOdometry odometry;
 
     private final AHRS gyroscope = new AHRS(SPI.Port.kMXP);
 
@@ -57,7 +58,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
         layout.addDouble("X", () -> chassisSpeeds.vxMetersPerSecond);
         layout.addDouble("Y", () -> chassisSpeeds.vyMetersPerSecond);
         layout.addDouble("R", () -> chassisSpeeds.omegaRadiansPerSecond);
-
+        layout.addDouble("dX", () -> getPose().getX());
+        layout.addDouble("dY", () -> getPose().getY());
+        layout.addDouble("dR", () -> getPose().getRotation().getDegrees());
 
         frontLeftModule = Mk4SwerveModuleHelper.createNeo(
                 shuffleboardTab.getLayout("Front Left Module", BuiltInLayouts.kList)
@@ -103,7 +106,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 Constants.BACK_RIGHT_MODULE_STEER_OFFSET
         );
 
-        //odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(gyroscope.getFusedHeading()), {frontLeftModule.get});
+        odometry = new SwerveDriveOdometry(
+            kinematics,
+            getRotation(),
+            new SwerveModulePosition[] {
+                frontLeftModule.getPosition(),
+                frontRightModule.getPosition(),
+                backLeftModule.getPosition(),
+                backRightModule.getPosition()
+            }
+        );
 
         shuffleboardTab.addNumber("Gyroscope Angle", () -> getRotation().getDegrees());
         //shuffleboardTab.addNumber("Pose X", () -> odometry.getPoseMeters().getX());
@@ -126,9 +138,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public Rotation2d getRotation() {
-        //return odometry.getPoseMeters().getRotation();
-        return gyroscope.getRotation2d();
-        //return new Rotation2d(0);
+        return Rotation2d.fromDegrees(-gyroscope.getFusedHeading());
+    }
+
+    public void resetPosition() {
+        gyroscope.resetDisplacement();
+    }
+
+    public Pose2d getPose() {
+        return odometry.getPoseMeters();
     }
 
     public void drive(ChassisSpeeds chassisSpeeds) {
@@ -143,12 +161,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        //odometry.update(Rotation2d.fromDegrees(gyroscope.getFusedHeading()),
-        //         new SwerveModuleState(frontLeftModule.getDriveVelocity(), new Rotation2d(frontLeftModule.getSteerAngle())),
-        //         new SwerveModuleState(frontRightModule.getDriveVelocity(), new Rotation2d(frontRightModule.getSteerAngle())),
-        //         new SwerveModuleState(backLeftModule.getDriveVelocity(), new Rotation2d(backLeftModule.getSteerAngle())),
-        //         new SwerveModuleState(backRightModule.getDriveVelocity(), new Rotation2d(backRightModule.getSteerAngle()))
-        //);
+        odometry.update(
+            getRotation(),
+            new SwerveModulePosition[] {
+                frontLeftModule.getPosition(),
+                frontRightModule.getPosition(),
+                backLeftModule.getPosition(),
+                backRightModule.getPosition()
+            }
+        );
 
         SwerveModuleState[] states = kinematics.toSwerveModuleStates(chassisSpeeds);
 

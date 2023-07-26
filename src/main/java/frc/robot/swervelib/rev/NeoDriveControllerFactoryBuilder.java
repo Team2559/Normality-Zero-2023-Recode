@@ -86,6 +86,11 @@ public final class NeoDriveControllerFactoryBuilder {
         }
 
         @Override
+        public double getStatePosition() {
+            return encoder.getPosition();
+        }
+
+        @Override
         public double getMotorTemperature() {
             return motor.getMotorTemperature();
         }
