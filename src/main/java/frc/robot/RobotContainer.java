@@ -24,6 +24,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -108,8 +109,10 @@ private static double modifyAxis(double value) {
   private void configureBindings() {
     // Configure the trigger bindings
 
+    // Reset robot orientation
+    new JoystickButton(m_driverController, XboxController.Button.kBack.value).onTrue(new InstantCommand(() -> drivetrain.resetPosition(), drivetrain));
 
-    // Reset swerve module angles
+    // Set all swerve modules to point "Forwards"
     new JoystickButton(m_driverController, XboxController.Button.kStart.value).whileTrue(new AngleCommand(drivetrain, () -> 1, () -> 0, () -> 0));
 
     // Intake button configurations
@@ -155,7 +158,7 @@ private static double modifyAxis(double value) {
     Trajectory path = TrajectoryGenerator.generateTrajectory(
       new Pose2d(0.0, 0.0, Rotation2d.fromDegrees(0)),
       new ArrayList<>(),
-      new Pose2d(0.5, 0.0, Rotation2d.fromDegrees(0)),
+      new Pose2d(1, 0.0, Rotation2d.fromDegrees(0)),
       Constants.trajectoyConfig
     );
     

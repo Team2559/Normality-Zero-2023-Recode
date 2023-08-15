@@ -118,8 +118,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         );
 
         shuffleboardTab.addNumber("Gyroscope Angle", () -> getRotation().getDegrees());
-        //shuffleboardTab.addNumber("Pose X", () -> odometry.getPoseMeters().getX());
-        //shuffleboardTab.addNumber("Pose Y", () -> odometry.getPoseMeters().getY());
+        shuffleboardTab.addNumber("Pose X", () -> odometry.getPoseMeters().getX());
+        shuffleboardTab.addNumber("Pose Y", () -> odometry.getPoseMeters().getY());
 
         shuffleboardTab.addBoolean("Temperature safe",
                 () -> frontLeftModule.getDriveMotorTemperature()  < Constants.MaxNeoTemp && frontLeftModule.getSteerMotorTemperature()  < Constants.MaxNeoTemp
@@ -130,11 +130,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public void zeroGyroscope() {
-        // odometry.resetPosition(
-        //         new Pose2d(odometry.getPoseMeters().getTranslation(), Rotation2d.fromDegrees(0.0)),
-        //         Rotation2d.fromDegrees(gyroscope.getFusedHeading())
-        // );
         gyroscope.reset();
+        odometry.resetPosition(
+            getRotation(),
+            new SwerveModulePosition[] {
+                frontLeftModule.getPosition(),
+                frontRightModule.getPosition(),
+                backLeftModule.getPosition(),
+                backRightModule.getPosition()
+            },
+            getPose()
+        );
     }
 
     public Rotation2d getRotation() {
@@ -142,6 +148,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
 
     public void resetPosition() {
+        odometry.resetPosition(
+            getRotation(),
+            new SwerveModulePosition[] {
+                frontLeftModule.getPosition(),
+                frontRightModule.getPosition(),
+                backLeftModule.getPosition(),
+                backRightModule.getPosition()
+            },
+            new Pose2d()
+        );
         gyroscope.resetDisplacement();
     }
 
@@ -180,8 +196,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
         frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[0].angle.getRadians());
-        frontRightModule.set(-states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
+        frontRightModule.set(states[1].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[1].angle.getRadians());
         backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
-        backRightModule.set(-states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
+        backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
     }
 }
